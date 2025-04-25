@@ -95,7 +95,7 @@ def process_pdfs_turret_and_generate_excel(fullpath, input_date, update_progress
                         # Reordenar columnas
                         new_order = [
                             'Date-Nesting', 'Date Jake', 'Nesting', 'Type', 'Material', 'Gage', 'Size', 'Program', '# Sheets', 'Machine',
-                            'Utilization'
+                            'Utilization','Cut Time'
                         ]
                         df_final = df_final[new_order]
                         consolidated_df = pd.concat([consolidated_df, df_final], ignore_index=True)

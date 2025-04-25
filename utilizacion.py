@@ -166,7 +166,7 @@ def main():
     if df_consolidado1 is not None or df_consolidado2 is not None:
         # Concatenar los DataFrames si existen
         outputfinal = pd.concat([df_consolidado1, df_consolidado2], axis=0, ignore_index=True) if df_consolidado1 is not None and df_consolidado2 is not None else df_consolidado1 if df_consolidado1 is not None else df_consolidado2
-        outputfinal['Cut Time'] = None
+        ##outputfinal['Cut Time'] = None
         output_filename = f"Utilization_{date_filter}.xlsx"
         outputfinal.to_excel(os.path.join(excel_output_path, output_filename), index=False)
         log_message(f"Excel file saved at: {os.path.join(excel_output_path, output_filename)}")

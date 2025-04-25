@@ -43,10 +43,11 @@ def process_pdfs_laser_plasma_and_generate_excel(pdf_files, input_date, update_p
                 tables = page.extract_tables()
                 for table in tables:
                     if table and table[0] == ['MACHINE', None, 'SCHEDULE', None, None, None, None, None, '', 'TOTAL CUT TIME', None, None, None]:
-                        data = table[1]
+                        data = table[1]  
                         machine = data[0]
                         schedule = data[2]
-                        total_cut_time = data[9]
+                        total_cut_time = data[8]
+                        print(data[7],data[8],data[9],data[10])
                         headers_df = pd.DataFrame([[machine, schedule, total_cut_time]], columns=['MACHINE', 'SCHEDULE', 'TOTAL CUT TIME'])
                         all_headers.append(headers_df)
                     elif table and table[0] == ['MACHINE', None, 'SCHEDULE', None, None, None, None, None, 'TOTAL CUT TIME', None, None, None]:
@@ -54,8 +55,9 @@ def process_pdfs_laser_plasma_and_generate_excel(pdf_files, input_date, update_p
                         machine = data[0]
                         schedule = data[2]
                         total_cut_time = data[8]
+                        print(data[7],data[8],data[9],data[10])
                         headers_df = pd.DataFrame([[machine, schedule, total_cut_time]], columns=['MACHINE', 'SCHEDULE', 'TOTAL CUT TIME'])
-                        all_headers.append(headers_df)  
+                        all_headers.append(headers_df) 
 
                 for table in tables:
                     for row in table:
@@ -129,7 +131,6 @@ def process_pdfs_laser_plasma_and_generate_excel(pdf_files, input_date, update_p
         merged_df['Sheet Size'] = merged_df['Sheet Size'].apply(lambda x: update_sheet_size(x, valid_sizes))
         merged_df['Date process'] = pd.to_datetime(merged_df['Date process'], format='%m_%d_%Y').dt.strftime('%m/%d/%Y')
         merged_df['Date Jake'] = pd.to_datetime(merged_df['Date Jake'], format='%m_%d_%Y').dt.strftime('%m/%d/%Y')
-
         merged_df = merged_df.rename(columns={
             'MACHINE': 'Machine',
             'Nest': 'Nesting',
@@ -148,7 +149,7 @@ def process_pdfs_laser_plasma_and_generate_excel(pdf_files, input_date, update_p
         # Reordenar las columnas
         new_order = [
             'Date-Nesting', 'Date Jake', 'Nesting', 'Type', 'Material', 
-            'Gage', 'Size', 'Program', '# Sheets', 'Machine', 'Utilization'
+            'Gage', 'Size', 'Program', '# Sheets', 'Machine', 'Utilization','Cut Time'
         ]
 
         merged_df = merged_df[new_order]
@@ -161,7 +162,7 @@ def process_pdfs_laser_plasma_and_generate_excel(pdf_files, input_date, update_p
         merged_df = merged_df.drop_duplicates()
 
         df_consolidado1 = pd.DataFrame(merged_df)
-        print(df_consolidado1)
+        print("est es el df consolidado:" , df_consolidado1)
 
     else:
         print("Error", "No se pueden combinar los DataFrames.")
